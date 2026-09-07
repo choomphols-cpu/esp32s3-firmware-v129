@@ -1,4 +1,10 @@
-yaml
+# Current approach (PyYAML - loses comments)
+yaml.dump(config, file, default_flow_style=False, sort_keys=False)
+
+# Recommended approach (ruamel.yaml - preserves everything)
+from ruamel.yaml import YAML
+yaml = YAML()
+yaml.dump(data, file)  # Preserves comments, formatting, structure
 name: Build Custom MicroPython
 
 on:
