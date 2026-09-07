@@ -1,0 +1,48 @@
+yaml
+name: Build Custom MicroPython
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Install Build Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y git wget flex bison gperf cmake ninja-build python3 python3-pip python3-venv libusb-1.0-0-dev
+
+      - name: Clone MicroPython v1.29.0
+        run: |
+          git clone -b v1.29.0 --recursive https://github.com
+
+      - name: Clone ulab Module
+        run: |
+          git clone https://github.com ulab
+
+      - name: Build MicroPython Cross-Compiler
+        run: |
+          cd micropython/mpy-cross
+          make
+
+      - name: Setup Espressif ESP-IDF Tools
+        run: |
+          cd micropython
+          git submodule update --init --recursive lib/esp-idf
+          cd lib/esp-idf
+          ./install.sh esp32s3
+
+      - name: Compile Custom Firmware (v1.29.0 + SPIRAM_OCT + ulab)
+        run: |
+          cd micropython/lib/esp-idf
+          . ./export.sh
+          cd ../../../micropython/ports/esp32
+          make submodules
+          make BOARD=ESP32_GENERIC_S3 BOARD_VARIANT=SPIRAM_OCT USER_C_MODULES=../../../../ulab/code/micropython.cmake
+
+      - name: Output Firmware to Download Area
+        uses: actions/upload-artifact@v4
+        with:
+          name: MicroPython-v1.29.0-ulab-OCT_SPIRAM
+          path: micropython/ports/esp32/build-ESP32_GENERIC_S3-SPIRAM_OCT/firmwar
