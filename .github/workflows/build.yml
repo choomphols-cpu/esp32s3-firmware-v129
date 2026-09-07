@@ -1,4 +1,5 @@
 yaml
+
 name: Build Custom MicroPython
 
 on:
@@ -45,4 +46,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: MicroPython-v1.29.0-ulab-OCT_SPIRAM
-          path: micropython/ports/esp32/build-ESP32_GENERIC_S3-SPIRAM_OCT/firmwar
+          path: micropython/ports/esp32/build-ESP32_GENERIC_S3-SPIRAM_OCT/firmware
