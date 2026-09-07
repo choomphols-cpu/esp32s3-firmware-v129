@@ -1,18 +1,17 @@
 yaml
-
 name: Build Custom MicroPython
 
 on:
   workflow_dispatch:
 
 jobs:
-  build:
+  compile_firmware:
     runs-on: ubuntu-24.04
     steps:
       - name: Install Build Dependencies
         run: |
-          sudo apt update
-          sudo apt install -y git wget flex bison gperf cmake ninja-build python3 python3-pip python3-venv libusb-1.0-0-dev
+          sudo apt-get update
+          sudo apt-get install -y git wget flex bison gperf cmake ninja-build python3 python3-pip python3-venv libusb-1.0-0-dev
 
       - name: Clone MicroPython v1.29.0
         run: |
@@ -46,4 +45,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: MicroPython-v1.29.0-ulab-OCT_SPIRAM
-          path: micropython/ports/esp32/build-ESP32_GENERIC_S3-SPIRAM_OCT/firmware
+          path: micropython/ports/esp32/build-ESP32_GENERIC_S3-SPIRAM_OCT/firmware.bin
