@@ -5,13 +5,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  compile_firmware:
+  build:
     runs-on: ubuntu-24.04
     steps:
       - name: Install Build Dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y git wget flex bison gperf cmake ninja-build python3 python3-pip python3-venv libusb-1.0-0-dev
+          sudo apt update
+          sudo apt install -y git wget flex bison gperf cmake ninja-build python3 python3-pip python3-venv libusb-1.0-0-dev
 
       - name: Clone MicroPython v1.29.0
         run: |
